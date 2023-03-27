@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+</head>
+<body>
+<h2>Whats on your mind?</h2>
+   
+        {% for post in posts%}
+
+        <div>
+  
+            <img src= "{{post['post_image']}}" width= "200"> 
+            <p> {{post['post_text']}}</p>
+        </div>
+
+        {% endfor%}
+    </ul>
+<</h2>
+
+</body>
+
+</div>
+</html>

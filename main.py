@@ -14,7 +14,27 @@ def index():
     return render_template(
         "home.html.jinja"
         
+
     )
+
+@app.route('/post')
+def post_feed():
+      
+      cursor = connection.cursor()
+      
+      cursor.execute("SELECT * FROM `Post` ORDER BY `timestamp`")
+
+      results = cursor.fetchall()
+
+      return render_template(
+        "post.html.jinja",
+
+        posts=results
+        
+
+    )
+
+    
 
 
 connection = pymysql.connect(
@@ -27,3 +47,6 @@ connection = pymysql.connect(
 
 
 )
+
+if __name__=='__main__':
+        app.run(debug=True)
