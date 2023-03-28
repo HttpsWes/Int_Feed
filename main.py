@@ -22,7 +22,7 @@ def post_feed():
       
       cursor = connection.cursor()
       
-      cursor.execute("SELECT * FROM `Post` ORDER BY `timestamp`")
+      cursor.execute("SELECT * FROM `Post` JOIN `User` ON `Post` . `user_id` = `User`.`id` ORDER BY `timestamp` DESC;")
 
       results = cursor.fetchall()
 
