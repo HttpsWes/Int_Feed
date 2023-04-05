@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect
+from flask import Flask, render_template, request,redirect, send_from_directory
 import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
@@ -28,6 +28,10 @@ def user_loader(user_id):
      
      return User(result['id'], result['username'], result['banned'])
 
+@app.get('/media/<path:path>')
+def send_media(path):
+    return send_from_directory('media',path)
+
 @app.route("/home")
 def index():
 
@@ -37,7 +41,7 @@ def index():
 
     )
 
-@app.route('/post')
+@app.route('/feed')
 def post_feed():
       
       cursor = connection.cursor()
@@ -53,16 +57,46 @@ def post_feed():
         
 
     )
+
+@app.route('/post', methods = ['POST'])
+@login_required
+def create_post():
+
+    cursor = connection.cursor()
+
+    photo = request.files['image']
+
+    file_name = photo.filename
+
+    file_extension = file_name.split('.')[-1]
+
+    print(file_extension)
+
+    if file_extension in ['jpg', 'jpeg', 'png', 'gif']:
+             
+        photo.save('media/post/' + file_name)
+
+    else:
+
+        raise Exception('Invalid file type')
+     
+
+    user_id = current_user.id
+
+    cursor.execute("INSERT INTO `Post` (`post_image`,`caption`,`user_id`) VALUES(%s,%s,%s)", (file_name, request.form['post'], user_id,))
+
+    return redirect('/feed')
+
 @app.route('/sign-out')
 def sign_out():
      logout_user()
 
-     return redirect('/sigm-in')
+     return redirect('/sign-in')
 
 @app.route('/sign-in', methods = ['POST', 'GET'])  
 def sign_in():
       if current_user.is_authenticated:
-           return redirect('/post')
+           return redirect('/feed')
       
 
       if request.method == 'POST':
@@ -82,7 +116,7 @@ def sign_in():
 
                 login_user(user)
 
-                return redirect('/post')
+                return redirect('/feed')
 
 
            
@@ -95,7 +129,7 @@ def sign_in():
 def sign_up():
        
       if current_user.is_authenticated:
-        return redirect('/post')
+        return redirect('/feed')
        
       if request.method == 'POST':
         cursor = connection.cursor()
@@ -122,7 +156,7 @@ def sign_up():
         """, (request.form['username'], request.form['password'],request.form['email'],request.form['brithday'],request.form['bio'],file_name ,request.form['display_name']))
 
         
-        return redirect('/post')
+        return redirect('/feed')
       elif request.method == 'GET':
       
         return render_template("sign.up.html.jinja")
