@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect, send_from_directory
+from flask import Flask, render_template, request,redirect, send_from_directory,abort
 import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
@@ -160,6 +160,35 @@ def sign_up():
       elif request.method == 'GET':
       
         return render_template("sign.up.html.jinja")
+      
+
+@app.route('/profile/<username>')
+def user_profile(username):
+
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM `User` WHERE `username` = %s", (username))
+
+    result = cursor.fetchone()
+
+    if result is None:
+        abort(404)
+
+    cursor.close()
+
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * from `Post` WHERE `user_id` = %s", result['id'])    
+
+    post_result = cursor.fetchall() 
+            
+    return render_template("user.profile.html.jinja", user=result,posts=post_result)      
+      
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html.jinja'),404     
+
+
 
 class User:
      def __init__(self,id,username, banned):

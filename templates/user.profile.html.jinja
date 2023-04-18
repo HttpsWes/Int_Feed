@@ -14,46 +14,35 @@
 <body>
  <h1>IntFeed <img src="/static/spooky-removebg-preview.png" hight = "50" width= "40" ></h1>
 
-<h1 class= "text-center">Hi {{current_user.username}}</h1> <hr>
+
 <br>
 
 
 <div class="mx-auto p-2 border-dark rounded" style="width: 700px;">
 
-<h2>Whats on your mind?</h2>
- <form action="/post" method="post" enctype="multipart/form-data">
-<div class="mb-3">
- <input type="text" name="post" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="What you thinking?">
- <br>
- <button type="submit" class="w-100 btn btn-lg btn-primary">Post</button>
- <br>
-    <label for="exampleInputPassword1" class="form-label">Profile image</label>
-    <input type="file" name="image" class="form-control" id="exampleInputPassword1">
-</div>
+<h2>{{user.display_name}}</h2>
 
-
-</form>
+<img src= "/media/users/{{user['photo']}}" height = "80" width= "80" class=" rounded-circle object-fit-cover rounded">
+<p>{{user.bio}}</p>
+ <p>{{user['birthday'].strftime("%b %-m, %Y ")}}</p>
 
 </div>
-   
+<h2>Posts</h2>
+
+<div>
         {% for post in posts%}
 
-        <div  class="border border-dark p-2 mt-5 rounded mx-auto p-2" style="width: 400px;">
+        <div  class="border border-dark p-2 mt-5 rounded mx-auto p-2" style="width: 800px;">
 
 
             <p>{{post['username']}} (@{{post['display_name']}})</p>
             <p>{{post['timestamp'].strftime("%b %-m, %Y ")}}</p>
          
             <p>{{post['caption']}}</p>
-            <img src= "/media/post/{{post['post_image']}}"  hight = "400" width= "400" class="object-fit-cover rounded"> 
+            <img src= "/media/post/{{post['post_image']}}"  height = "200" width= "200" class="object-fit-cover rounded"> 
             
         </div>
 
         {% endfor%}
-    </ul>
-</h2>
-
-</body>
 
 </div>
-</html>
