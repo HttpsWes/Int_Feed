@@ -9,18 +9,34 @@
         <link href = "/static/styles.css" type= "text/css" rel="stylesheet">
             <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
 
-  <p>Sign out? <a href="/sign-out">Sign Out</a></p>
+<h3 class="float-md-start mb-0">IntFeed<img src="/static/spooky-removebg-preview.png" hight = "50" width= "40" style="color: white;"></h3>
 </head>
 
+<br>
+<br>
+
 <body>
-   <div>
-      <h3 class="float-md-start mb-0">IntFeed<img src="/static/spooky-removebg-preview.png" hight = "50" width= "40" style="color: white;"></h3>
-      <nav class="nav nav-masthead justify-content-center float-md-end">
-        <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Home</a>
-        <a class="nav-link fw-bold py-1 px-0 active" href="/sign-out">Sign in</a>
-        <a class="nav-link fw-bold py-1 px-0 active " href="/sign-up">Sign Up</a>
-      </nav>
-    </div>
+   <div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <div class="col-md-3 mb-2 mb-md-0">
+        <a href="/static/spooky-removebg-preview.png" class="d-inline-flex link-body-emphasis text-decoration-none">
+          <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href=""/></svg>
+        </a>
+     </div>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/home" class="nav-link px-2 ">Home</a></li>
+        <li><a href="/feed" class="nav-link px-2">Feed</a></li>
+        <li><a href="/username/profile" class="nav-link px-2">Profile</a></li>
+     
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <button type="button" href="/sign-out" class="btn btn-outline-primary me-2">Sign-out</button>
+        <button type="button" href="/sign-up " class="btn btn-primary">Sign-up</button>
+      </div>
+    </header>
+  </div> 
 
 <h1 class= "text-center">Hi {{current_user.username}}</h1> <hr>
 <br>
