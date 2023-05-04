@@ -42,6 +42,7 @@ def index():
     )
 
 @app.route('/feed')
+@login_required
 def post_feed():
       
       cursor = get_db().cursor()
