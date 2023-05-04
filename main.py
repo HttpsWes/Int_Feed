@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request,redirect, send_from_directory,abort
+from flask import Flask, render_template, request,redirect, send_from_directory,abort, g
 import pymysql
 import pymysql.cursors
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = 'something_random'
 
 @login_manager.user_loader
 def user_loader(user_id):
-     cursor = connection.cursor()
+     cursor = get_db().cursor()
 
      cursor.execute("SELECT * from `User` WHERE `id` = " + user_id)
 
@@ -44,7 +44,7 @@ def index():
 @app.route('/feed')
 def post_feed():
       
-      cursor = connection.cursor()
+      cursor = get_db().cursor()
       
       cursor.execute("SELECT * FROM `Post` JOIN `User` ON `Post` . `user_id` = `User`.`id` ORDER BY `timestamp` DESC;")
 
@@ -62,7 +62,7 @@ def post_feed():
 @login_required
 def create_post():
 
-    cursor = connection.cursor()
+    cursor = get_db().cursor()
 
     photo = request.files['image']
 
@@ -100,7 +100,7 @@ def sign_in():
       
 
       if request.method == 'POST':
-           cursor = connection.cursor()
+           cursor = get_db().cursor()
 
            cursor.execute(f"SELECT * FROM `User` WHERE `username` = '{request.form['username']}'")
 
@@ -132,7 +132,7 @@ def sign_up():
         return redirect('/feed')
        
       if request.method == 'POST':
-        cursor = connection.cursor()
+        cursor = get_db().cursor()
 
         photo = request.files['profile_image']
 
@@ -165,7 +165,7 @@ def sign_up():
 @app.route('/profile/<username>')
 def user_profile(username):
 
-    cursor = connection.cursor()
+    cursor = get_db().cursor()
 
     cursor.execute("SELECT * FROM `User` WHERE `username` = %s", (username))
 
@@ -176,7 +176,7 @@ def user_profile(username):
 
     cursor.close()
 
-    cursor = connection.cursor()
+    cursor = get_db().cursor()
 
     cursor.execute("SELECT * from `Post` WHERE `user_id` = %s", result['id'])    
 
@@ -202,20 +202,27 @@ class User:
         return str(self.id)
           
 
+def connect_db():
+    return pymysql.connect(
+        host="10.100.33.60",
+        user="wihezuo",
+        password="225380047",
+        database="wihezuo_social_media",
+        cursorclass=pymysql.cursors.DictCursor,
+        autocommit=True
+    )
 
-connection = pymysql.connect(
-    host = "10.100.33.60",
-    user = "wihezuo",
-    password = "225380047",
-    database= "wihezuo_social_media",
-    cursorclass=pymysql.cursors.DictCursor,
-    autocommit = True
+def get_db():
+    '''Opens a new database connection per request.'''        
+    if not hasattr(g, 'db'):
+        g.db = connect_db()
+    return g.db    
 
-
-)
-
-
-
+@app.teardown_appcontext
+def close_db(error):
+    '''Closes the database connection at the end of request.'''    
+    if hasattr(g, 'db'):
+        g.db.close() 
 
 
 if __name__=='__main__':
