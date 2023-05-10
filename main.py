@@ -19,8 +19,8 @@ app.config['SECRET_KEY'] = 'something_random'
 def user_loader(user_id):
      cursor = get_db().cursor()
 
-     cursor.execute("SELECT * from `User` WHERE `id` = " + user_id)
-
+     cursor.execute("SELECT * from `User` WHERE `id` =%s ", (user_id)),
+    
      result = cursor.fetchone()
 
      if result is None:
@@ -32,7 +32,7 @@ def user_loader(user_id):
 def send_media(path):
     return send_from_directory('media',path)
 
-@app.route("/home")
+@app.route("/")
 def index():
 
     return render_template(
@@ -48,6 +48,7 @@ def post_feed():
       cursor = get_db().cursor()
       
       cursor.execute("SELECT * FROM `Post` JOIN `User` ON `Post` . `user_id` = `User`.`id` ORDER BY `timestamp` DESC;")
+      
 
       results = cursor.fetchall()
 
@@ -103,8 +104,8 @@ def sign_in():
       if request.method == 'POST':
            cursor = get_db().cursor()
 
-           cursor.execute(f"SELECT * FROM `User` WHERE `username` = '{request.form['username']}'")
 
+           cursor.execute("SELECT * FROM `User` WHERE `username` = %s", (request.form['username']))
            result = cursor.fetchone()
 
            if result is None:

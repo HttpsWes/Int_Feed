@@ -23,7 +23,7 @@
      </div>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/home" class="nav-link px-2 ">Home</a></li>
+        <li><a href="/" class="nav-link px-2 ">Home</a></li>
         <li><a href="/feed" class="nav-link px-2">Feed</a></li>
         <li><a href="/profile/{{current_user.username}}" class="nav-link px-2">Profile</a></li>
      
@@ -38,31 +38,133 @@
 <br>
 
 <br>
-<div class="mx-auto border border-dark-subtle border-3 rounded p-3" style="width: 700px;">
+<div class="mx-auto border border-dark-subtle border-3 rounded p-3" style="width: 700px;"> 
 
-<h2>{{user.display_name}}</h2>
+<div class="container text-center">
+  <div class="row align-items-start">
+    <div class="col-1">
+    
+    </div>
+    <div class="col-8">
+        <h2>{{user.display_name}}</h2>
 
-<img src= "/media/users/{{user['photo']}}" height = "80" width= "80" class=" rounded-circle object-fit-cover rounded">
-<p>{{user.bio}}</p>
- <p>{{user['birthday'].strftime("%b %-m, %Y ")}}</p>
+        
+    </div>
+
+  </div>
+</div>
+
+<div class="container text-center">
+  <div class="row align-items-center">
+    <div class="col-1">
+     <img src= "/media/users/{{user['photo']}}" height = "150" width= "150" class=" rounded-circle object-fit-cover rounded">
+    </div>
+    <div class="col-11">
+
+     <span class="inline-block fas fa-certificate fa-lg text-blue-500 
+                               relative mr-6 text-xl transform -translate-y-2" aria-hidden="true">
+            <i class="fas fa-check text-white text-xs absolute inset-x-0
+                               ml-1 mt-px"></i>
+          </span>
+
+          <!-- follow button -->
+          <a href="#" class="bg-blue-500 px-2 py-1 
+                        text-white font-semibold text-sm rounded block text-center 
+                        sm:inline-block block">Follow</a>
+        
+
+<div class="hidden md:flex space-x-8 mb-4">
+          
+            <span class="font-semibold">136</span>
+            posts |
+       
+            <span class="font-semibold">40.5k</span>
+            followers |
+         
+            <span class="font-semibold">302</span>
+            following
+          
+</div>
+<p>Bio: {{user.bio}}</p>
+ <p>Birthday: {{user['birthday'].strftime("%b %-m, %Y ")}}</p>
+    </div>
+  </div>
+</div>
+
+
+
 
 </div>
 <h2>Posts</h2>
 
 <div>
-        {% for post in posts%}
+            {% for post in posts%}
 
-        <div  class="border border-dark p-2 mt-5 rounded mx-auto p-2" style="width: 400px;">
+        <div  class="border border-dark p-2 mt-5 rounded mx-auto p-2" style="width: 600px;">
 
 
-            <p>{{post['username']}} (@{{post['display_name']}})</p>
-            <p>{{post['timestamp'].strftime("%b %-m, %Y ")}}</p>
+            <h5>{{post['username'] | escape }} {{post['display_name'] | escape }}</h5>
+            <p>{{post['timestamp'].strftime("%b %-m, %Y %-I:%M %p")}}</p>
          
-            <p>{{post['caption']}}</p>
-            <img src= "/media/post/{{post['post_image']}}"  height = "200" width= "200" class="object-fit-cover rounded"> 
-            
+           
+            <div class="text-center">
+            <img src= "/media/post/{{post['post_image']}}"  hight = "400" width= "400" class="object-fit-cover rounded"> 
+            </div>
+            <br>
+            <p>{{post['caption'] | escape }}</p>
         </div>
 
         {% endfor%}
 
 </div>
+
+
+ {# <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                     border-2 border-pink-600 p-1" src="https://images.unsplash.com/photo-1502791451862-7bd8c1df43a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80" alt="profile">
+      </div>
+
+      <!-- profile meta -->
+      <div class="w-8/12 md:w-7/12 ml-4">
+        <div class="md:flex md:flex-wrap md:items-center mb-4">
+          <h2 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0">
+            mrtravlerrr_
+          </h2>
+
+          <!-- badge -->
+          <span class="inline-block fas fa-certificate fa-lg text-blue-500 
+                               relative mr-6 text-xl transform -translate-y-2" aria-hidden="true">
+            <i class="fas fa-check text-white text-xs absolute inset-x-0
+                               ml-1 mt-px"></i>
+          </span>
+
+          <!-- follow button -->
+          <a href="#" class="bg-blue-500 px-2 py-1 
+                        text-white font-semibold text-sm rounded block text-center 
+                        sm:inline-block block">Follow</a>
+        </div>
+
+        <!-- post, following, followers list for medium screens -->
+        <ul class="hidden md:flex space-x-8 mb-4">
+          <li>
+            <span class="font-semibold">136</span>
+            posts
+          </li>
+
+          <li>
+            <span class="font-semibold">40.5k</span>
+            followers
+          </li>
+          <li>
+            <span class="font-semibold">302</span>
+            following
+          </li>
+        </ul>
+
+        <!-- user meta form medium screens -->
+        <div class="hidden md:block">
+          <h1 class="font-semibold">Mr Travlerrr...</h1>
+          <span>Travel, Nature and Music</span>
+          <p>Lorem ipsum dolor sit amet consectetur</p>
+        </div>
+
+      </div> #}

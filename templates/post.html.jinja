@@ -25,7 +25,7 @@
      </div>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="/home" class="nav-link px-2 ">Home</a></li>
+        <li><a href="/" class="nav-link px-2 ">Home</a></li>
         <li><a href="/feed" class="nav-link px-2">Feed</a></li>
         <li><a href="/profile/{{current_user.username}}" class="nav-link px-2">Profile</a></li>
      
@@ -37,19 +37,19 @@
     </header>
   </div> 
 
-<h1 class= "text-center">Hi {{current_user.username}}</h1> <hr>
-<br>
+<h1 class= "text-center">Hi {{current_user.username}}</h1> 
 
 
-<div class="mx-auto p-2 border-dark rounded" style="width: 700px;">
+
+<div class="mx-auto p-2 mt-5 border border-dark rounded" style="width: 500px;">
 
 <h2>Whats on your mind?</h2>
  <form action="/post" method="post" enctype="multipart/form-data">
 <div class="mb-3">
- <input type="text" name="post" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="What you thinking?">
+ <input type="text" name="post" class="form-control border-2 border-dark" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="What you thinking?">
 <br>
     <label for="exampleInputPassword1" class="form-label">Profile image</label>
-    <input type="file" name="image" class="form-control" id="exampleInputPassword1">
+    <input type="file" name="image" class="form-control border-2 border-dark" id="exampleInputPassword1">
     <br>
      <button type="submit" class="w-100 btn btn-lg btn-primary" style="width: 150px;">Post</button>
 </div>
@@ -64,12 +64,15 @@
         <div  class="border border-dark p-2 mt-5 rounded mx-auto p-2" style="width: 600px;">
 
 
-            <p>{{post['username']}} (@{{post['display_name']}})</p>
-            <p>{{post['timestamp'].strftime("%b %-m, %Y ")}}</p>
+            <h5>{{post['username'] | escape }} (@{{post['display_name'] | escape }})</h5>
+            <p>{{post['timestamp'].strftime("%b %-m, %Y %-I:%M %p")}}</p>
          
-            <p>{{post['caption']}}</p>
+           
+            <div class="text-center">
             <img src= "/media/post/{{post['post_image']}}"  hight = "400" width= "400" class="object-fit-cover rounded"> 
-            
+            </div>
+            <br>
+            <p>{{post['caption'] | escape }}</p>
         </div>
 
         {% endfor%}
