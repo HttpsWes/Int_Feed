@@ -1,14 +1,14 @@
 
 body {
         
-        border-radius: 5px;
-        margin-top: 50px;
-        margin-bottom: 100px;
-        margin-right: 300px;
-        margin-left: 100px;
-        background-color: lightgrey;
-        
- }
+    border-radius: 5px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    margin-right: 200px;
+    margin-left: 200px;
+    background-color: lightgrey;
+    
+}
 
 
 h1 h2 h3 h4 h5 h6 {
@@ -21,7 +21,3 @@ h1 h2 h3 h4 h5 h6 {
 
 }
 
-
-.mt-5 {
-    margin-top: 30px !important;
-  }
